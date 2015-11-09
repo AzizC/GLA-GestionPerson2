@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Registration page</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+
+            Id: 
+            <h:inputText value="#{searchBean.id}"
+                         id="idInput">
+            </h:inputText>
+
+            <h:commandButton value="Search" 
+                             action="#{searchBean.searchId()}"/>
+
+        </h:form>
+        <br/>
+        <h:form>
+
+            Firstname: 
+            <h:inputText value="#{searchBean.fistname}"
+                         id="idInput">
+            </h:inputText>
+
+            <h:commandButton value="Search" 
+                             action="#{searchBean.searchFirstname()}"/>
+
+        </h:form>
+        <br/>
+        <h:form>
+
+            <c:if test="#{searchBean.toFind != null}" >
+
+
+
+                <fieldset>
+                    <legend>Civil </legend>
+
+                    Firstname: 
+                    <h:inputText value="#{searchBean.toFind.firstname}"
+                                 id="firstnameInput">
+                    </h:inputText>
+                    <br/>
+
+                    Lastname: 
+                    <h:inputText value="#{searchBean.toFind.lastname}"
+                                 id="lastnameInput">
+                    </h:inputText>
+                    <br/>  
+
+                    Birthdate: 
+                    <h:inputText value="#{searchBean.toFind.birthdate}"
+                                 id="birthdateInput">
+                    </h:inputText>
+                    <br/>  
+
+                    Title: 
+                    <h:inputText value="#{searchBean.toFind.status.title}"
+                                 id="titleInput">
+                    </h:inputText>
+                    <br/>  
+
+                    Full title: 
+                    <h:inputText value="#{searchBean.toFind.status.fullTitle}"
+                                 id="fullTitleInput">
+                    </h:inputText>
+                    <br/> 
+
+                </fieldset>
+
+
+                <fieldset>
+                    <legend>Address 1</legend>
+
+                    Code: 
+                    <h:inputText value="#{searchBean.toFind.addresses[0].code}"
+                                 id="codeAddress1Input">
+                    </h:inputText>
+                    <br/>
+
+                    Town: 
+                    <h:inputText value="#{searchBean.toFind.addresses[0].town}"
+                                 id="townAddress1Input">
+                    </h:inputText>
+                    <br/>  
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Address 2</legend>
+
+                    Code: 
+                    <h:inputText value="#{searchBean.toFind.addresses[1].code}"
+                                 id="codeAddress2Input">
+                    </h:inputText>
+                    <br/>
+
+                    Town: 
+                    <h:inputText value="#{searchBean.toFind.addresses[1].town}"
+                                 id="townAddress2Input">
+                    </h:inputText>
+                    <br/>  
+
+                </fieldset>       
+
+            </c:if>
+
+            <h:commandButton value="Update" 
+                             action="#{searchBean.update()}"/>
+            <h:commandButton value="Undo" 
+                             action="#{searchBean.undo()}"/>
+            <h:commandButton value="Remove" 
+                             action="#{searchBean.remove()}"/>
+
+        </h:form>
+
+
+    </h:body>
+</html>
+

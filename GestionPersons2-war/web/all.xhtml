@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>All persons</title>
+    </h:head>
+    <h:body>
+        
+        <h1>All persons</h1>
+        <h:form>
+            <h:dataTable var="person" 
+                         value="#{listAllPersonsBean.persons}"
+                         border="1" >
+                <h:column>
+                    <f:facet name="header">Status</f:facet>
+                        #{person.status.title}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Firstname</f:facet>
+                    <h:inputText value="#{person.firstname}"
+                                 id="firstnameInput"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Lastname</f:facet>
+                    <h:inputText value="#{person.lastname}"
+                                 id="lastnameInput"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Birthdate</f:facet>
+                        #{person.birthdate}
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Update" 
+                                     action="#{listAllPersonsBean.update(person)}"/>
+                    <h:commandButton value="Undo" 
+                                     action="#{listAllPersonsBean.undo(person)}"/>
+                    <h:commandButton value="Remove" 
+                                     action="#{listAllPersonsBean.remove(person)}"/>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+        
+        <h1>All status</h1>
+        <h:dataTable var="status" 
+                     value="#{listAllPersonsBean.allStatus()}"
+                     border="1" >
+            <h:column>
+                <f:facet name="header">Title</f:facet>
+                    #{status.title}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Full title</f:facet>
+                    #{status.fullTitle}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Persons</f:facet>
+                <h:dataTable var="person" 
+                             value="#{status.persons}"
+                             border="1" >
+                    <h:column>
+                        <f:facet name="header">Firstname</f:facet>
+                            #{person.firstname}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Lastname</f:facet>
+                            #{person.lastname}
+                    </h:column>
+                </h:dataTable>
+            </h:column>
+        </h:dataTable>
+
+        <h1>All addresses</h1>
+        <h:dataTable var="address" 
+                     value="#{listAllPersonsBean.allAddresses()}"
+                     border="1" >
+            <h:column>
+                <f:facet name="header">Code</f:facet>
+                    #{address.code}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Town</f:facet>
+                    #{address.town}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Persons</f:facet>
+                <h:dataTable var="person" 
+                             value="#{address.persons}"
+                             border="1" >
+                    <h:column>
+                        <f:facet name="header">Firstname</f:facet>
+                            #{person.firstname}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Lastname</f:facet>
+                            #{person.lastname}
+                    </h:column>
+
+                </h:dataTable>
+            </h:column>
+        </h:dataTable>
+    </h:body>
+</html>
+
