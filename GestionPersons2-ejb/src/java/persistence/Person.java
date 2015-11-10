@@ -14,10 +14,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -42,12 +42,12 @@ public class Person implements Serializable {
     
     private String firstname, lastname, birthdate;
     
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     private Status status;
+   
+    @OneToMany(targetEntity = Location.class, mappedBy = "person", cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    private List<Location> locations = new ArrayList<>();
     
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Address> addresses = new ArrayList<>();
-
     public Person(){
         
     }
@@ -56,11 +56,6 @@ public class Person implements Serializable {
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthdate = birthdate;
-    }
-
-    public void addAddress(Address address){
-        this.addresses.add(address);
-        address.addPerson(this);
     }
     
     public Long getId() {
@@ -104,12 +99,18 @@ public class Person implements Serializable {
         this.status.addPerson(this);
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
+    public List<Location> getLocations() {
+        return locations;
     }
 
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+    
+    public void addAddress(Address a){
+        Location l = new Location(this, a);
+        a.getLocations().add(l);
+        locations.add(l);
     }
     
     @Override

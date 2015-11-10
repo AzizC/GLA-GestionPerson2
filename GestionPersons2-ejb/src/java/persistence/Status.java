@@ -26,7 +26,9 @@ import javax.persistence.OneToMany;
 @NamedQueries
 ({
     @NamedQuery(name="Status.findAll",
-        query="SELECT s FROM Status s")
+        query="SELECT s FROM Status s"),
+    @NamedQuery(name="Status.findByTitle", 
+    query="SELECT s FROM Status s WHERE LOWER(s.title) LIKE LOWER(?1)"),
 })
 public class Status implements Serializable {
     private static final long serialVersionUID = 1L;

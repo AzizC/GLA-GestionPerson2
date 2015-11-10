@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import persistence.Address;
@@ -27,6 +28,19 @@ public class PersonManagerBean implements PersonManager {
 
     @Override
     public void register(Person p) {
+        
+        Status status = p.getStatus();
+        
+        try{
+            Query q = em.createNamedQuery("Status.findByTitle");
+            q.setParameter(1, status.getTitle());
+            Status s = (Status) q.getSingleResult();
+            p.setStatus(s);
+        } catch(NoResultException e) {
+            // if getSingleResult returns 0 result
+            em.persist(status);
+        }
+      
         em.persist(p);
     }
 
@@ -53,8 +67,10 @@ public class PersonManagerBean implements PersonManager {
     }
 
     @Override
-    public void refresh(Person p) {
-        em.refresh(p);
+    public Person refresh(Person p) {
+        Person attached = em.merge(p);
+        em.refresh(attached);
+        return attached;
     }
 
     @Override

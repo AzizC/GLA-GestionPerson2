@@ -25,12 +25,14 @@ public class ListAllPersonsBean {
     @EJB
     private PersonManager pm;
     
+    private List<Person> persons;
+    
     public ListAllPersonsBean(){
-        
+        persons = pm.getAllPersons();
     }
     
     public List<Person> allPersons(){
-        return pm.getAllPersons();
+        return persons;
     }
     
     public List<Address> allAddresses(){
@@ -41,15 +43,18 @@ public class ListAllPersonsBean {
          return pm.getAllStatus();
     }
     
-    public void update(Person p){
-        pm.update(p);
+    public void update(Person i){
+        Person toUpdate = persons.get(persons.indexOf(i));
+        toUpdate = pm.update(toUpdate);
     }
     
-    public void remove(Person p){
-        pm.remove(p);
+    public void remove(Person i){
+        Person toRemove = persons.get(persons.indexOf(i));
+        pm.remove(toRemove);
     }
     
-    public void undo(Person p){
-        pm.refresh(p);
+    public void undo(Person i){
+        Person toUndo = persons.get(persons.indexOf(i));
+        toUndo = pm.update(toUndo);
     }
 }

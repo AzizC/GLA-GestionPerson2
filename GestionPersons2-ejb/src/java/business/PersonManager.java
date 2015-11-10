@@ -24,7 +24,7 @@ public interface PersonManager {
     public Person update(Person p);
     public Person find(String firstname);
     public void remove(Person p);
-    public void refresh(Person p);
+    public Person refresh(Person p);
     public List<Person> getAllPersons(); 
     public List<Address> getAllAddresses();
     public List<Status> getAllStatus();

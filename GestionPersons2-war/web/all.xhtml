@@ -11,8 +11,8 @@
         <h1>All persons</h1>
         <h:form>
             <h:dataTable var="person" 
-                         value="#{listAllPersonsBean.persons}"
-                         border="1" >
+                         value="#{listAllPersonsBean.allPersons()}"
+                         border="1">
                 <h:column>
                     <f:facet name="header">Status</f:facet>
                         #{person.status.title}

@@ -14,8 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -28,7 +26,9 @@ import javax.persistence.OneToMany;
 @NamedQueries
 ({
     @NamedQuery(name="Address.findAll",
-        query="SELECT a FROM Address a")
+        query="SELECT a FROM Address a"),
+    @NamedQuery(name="Address.findByCode", 
+    query="SELECT a FROM Address a WHERE LOWER(a.code) LIKE LOWER(?1)"),
 })
 public class Address implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -36,12 +36,12 @@ public class Address implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private String code;
     @Column(unique = true)
+    private String code;
     private String town;
 
-    @ManyToMany(mappedBy = "addresses")
-    private List<Person> persons = new ArrayList<>();
+    @OneToMany(targetEntity = Location.class, mappedBy = "address")
+    private List<Location> locations = new ArrayList<>();
     
     public Address(){
         
@@ -51,15 +51,15 @@ public class Address implements Serializable {
         this.code = code;
         this.town = town;
     }
-    
-    public List<Person> getPersons(){
-        return persons;
+
+    public List<Location> getLocations() {
+        return locations;
     }
-        
-    public void addPerson(Person p){
-        this.persons.add(p);
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
-    
+
     public Long getId() {
         return id;
     }

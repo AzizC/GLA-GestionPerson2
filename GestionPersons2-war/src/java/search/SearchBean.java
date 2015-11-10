@@ -74,6 +74,6 @@ public class SearchBean {
     }
     
     public void undo(){
-        pm.refresh(toFind);
+        toFind = pm.refresh(toFind);
     }
 }
