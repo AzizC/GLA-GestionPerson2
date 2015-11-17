@@ -7,19 +7,20 @@ package allPersons;
 
 import business.PersonManager;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import persistence.Address;
 import persistence.Person;
 import persistence.Status;
 
 /**
  *
- * @author aziz
+ * @author aziz 
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class ListAllPersonsBean {
 
     @EJB
@@ -27,12 +28,24 @@ public class ListAllPersonsBean {
     
     private List<Person> persons;
     
-    public ListAllPersonsBean(){
+    @PostConstruct  
+    public void init(){
         persons = pm.getAllPersons();
+    }  
+    
+    public void update(Person p){
+        pm.update(p);
     }
     
-    public List<Person> allPersons(){
-        return persons;
+    public void remove(Person p){
+        persons.remove(p);
+        pm.remove(p);
+    }
+    
+    public void undo(Person p){
+        int index = persons.indexOf(p);
+        persons.remove(p);
+        persons.add(index, pm.refresh(p));
     }
     
     public List<Address> allAddresses(){
@@ -42,19 +55,12 @@ public class ListAllPersonsBean {
     public List<Status> allStatus() {
          return pm.getAllStatus();
     }
-    
-    public void update(Person i){
-        Person toUpdate = persons.get(persons.indexOf(i));
-        toUpdate = pm.update(toUpdate);
+
+    public List<Person> getPersons() {
+        return persons;
     }
     
-    public void remove(Person i){
-        Person toRemove = persons.get(persons.indexOf(i));
-        pm.remove(toRemove);
-    }
-    
-    public void undo(Person i){
-        Person toUndo = persons.get(persons.indexOf(i));
-        toUndo = pm.update(toUndo);
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
     }
 }

@@ -19,8 +19,7 @@ import persistence.Person;
 @ViewScoped
 public class SearchBean {
     
-    private Long id;
-    private String fistname;
+    private String firstname;
     private Person toFind;
     
     @EJB
@@ -32,41 +31,25 @@ public class SearchBean {
     public SearchBean() {
        
     }
-    
-    public Long getId() {
-        return id;
+
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFistname() {
-        return fistname;
-    }
-
-    public void setFistname(String fistname) {
-        this.fistname = fistname;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public Person getToFind() {
         return toFind;
     }
-
-    public void setToFind(Person toFind) {
-        this.toFind = toFind;
-    }
-
-    public void searchId(){
-        toFind = pm.find(id);
-    }
     
-     public void searchFirstname(){
-        toFind = pm.find(fistname);
+    public void search(){
+        toFind = pm.find(firstname);
     }
     
     public void update(){
-        toFind = pm.update(toFind);
+        pm.update(toFind);
     }
     
     public void remove(){
@@ -74,6 +57,6 @@ public class SearchBean {
     }
     
     public void undo(){
-        toFind = pm.refresh(toFind);
+        toFind = pm.refresh(this.toFind);
     }
 }

@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -45,8 +46,8 @@ public class Person implements Serializable {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     private Status status;
    
-    @OneToMany(targetEntity = Location.class, mappedBy = "person", cascade = {CascadeType.REFRESH, CascadeType.MERGE})
-    private List<Location> locations = new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
+    private List<Address> addresses = new ArrayList<>();
     
     public Person(){
         
@@ -99,18 +100,17 @@ public class Person implements Serializable {
         this.status.addPerson(this);
     }
 
-    public List<Location> getLocations() {
-        return locations;
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
     
     public void addAddress(Address a){
-        Location l = new Location(this, a);
-        a.getLocations().add(l);
-        locations.add(l);
+        a.getPersons().add(this);
+        addresses.add(a);
     }
     
     @Override
@@ -150,4 +150,11 @@ public class Person implements Serializable {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" + "id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", birthdate=" + birthdate + ", status=" + status + '}';
+    }
+    
+    
 }

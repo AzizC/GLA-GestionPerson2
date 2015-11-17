@@ -10,33 +10,19 @@
 
         <h:form>
 
-            Id: 
-            <h:inputText value="#{searchBean.id}"
-                         id="idInput">
-            </h:inputText>
-
-            <h:commandButton value="Search" 
-                             action="#{searchBean.searchId()}"/>
-
-        </h:form>
-        <br/>
-        <h:form>
-
             Firstname: 
-            <h:inputText value="#{searchBean.fistname}"
+            <h:inputText value="#{searchBean.firstname}"
                          id="idInput">
             </h:inputText>
 
             <h:commandButton value="Search" 
-                             action="#{searchBean.searchFirstname()}"/>
+                             action="#{searchBean.search()}"/>
 
         </h:form>
         <br/>
         <h:form>
 
-            <c:if test="#{searchBean.toFind != null}" >
-
-
+            <c:if test="#{searchBean.toFind != null and not empty(searchBean.firstname)}" >
 
                 <fieldset>
                     <legend>Civil </legend>
@@ -108,15 +94,22 @@
 
                 </fieldset>       
 
-            </c:if>
-
-            <h:commandButton value="Update" 
+                <h:commandButton value="Update" 
                              action="#{searchBean.update()}"/>
-            <h:commandButton value="Undo" 
+                <h:commandButton value="Undo" 
                              action="#{searchBean.undo()}"/>
-            <h:commandButton value="Remove" 
+                <h:commandButton value="Remove" 
                              action="#{searchBean.remove()}"/>
-
+                
+            </c:if>         
+            
+            <c:if test="#{searchBean.toFind == null and not empty(searchBean.firstname)}" >
+                Not user found with the firstname "<h:outputText 
+                    value="#{searchBean.firstname}"
+                    id="usernameOPT">
+                    </h:outputText>"
+            </c:if>
+            
         </h:form>
 
 

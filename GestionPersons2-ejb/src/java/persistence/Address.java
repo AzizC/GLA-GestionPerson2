@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -40,8 +41,8 @@ public class Address implements Serializable {
     private String code;
     private String town;
 
-    @OneToMany(targetEntity = Location.class, mappedBy = "address")
-    private List<Location> locations = new ArrayList<>();
+    @ManyToMany(mappedBy = "addresses")
+    private List<Person> persons = new ArrayList<>();
     
     public Address(){
         
@@ -52,12 +53,12 @@ public class Address implements Serializable {
         this.town = town;
     }
 
-    public List<Location> getLocations() {
-        return locations;
+    public List<Person> getPersons() {
+        return persons;
     }
 
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
     }
 
     public Long getId() {
@@ -109,4 +110,11 @@ public class Address implements Serializable {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" + "id=" + id + ", code=" + code + ", town=" + town + ", persons=" + persons + '}';
+    }
+    
+    
 }
