@@ -121,14 +121,14 @@ public class PersonManagerBean implements PersonManager {
         if(status.getPersons().size() == 1){
             em.remove(status);   
         } else {  
-            managedPers.removeStatus();
+            status.getPersons().remove(managedPers);
         }
         
         for(Address a : managedPers.getAddresses()){
             if(a.getPersons().size() == 1){
                em.remove(a);
             } else {
-               managedPers.removeAddress(a);
+               a.getPersons().remove(managedPers);
             }
         }
         

@@ -99,10 +99,6 @@ public class Person implements Serializable {
         this.status = status;
         this.status.addPerson(this);
     }
-    
-    public void removeStatus() {
-        this.status.removePerson(this);
-    }
 
     public List<Address> getAddresses() {
         return addresses;
@@ -115,11 +111,6 @@ public class Person implements Serializable {
     public void addAddress(Address a){
         a.getPersons().add(this);
         addresses.add(a);
-    }
-    
-    public void removeAddress(Address a){
-        a.getPersons().remove(this);
-        addresses.remove(a);
     }
     
     @Override
