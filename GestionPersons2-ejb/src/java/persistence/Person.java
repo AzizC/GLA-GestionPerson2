@@ -46,7 +46,7 @@ public class Person implements Serializable {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     private Status status;
    
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE })
     private List<Address> addresses = new ArrayList<>();
     
     public Person(){
@@ -111,6 +111,11 @@ public class Person implements Serializable {
     public void addAddress(Address a){
         a.getPersons().add(this);
         addresses.add(a);
+    }
+    
+    public void removeAddress(Address a){
+        a.getPersons().remove(this);
+        addresses.remove(a);
     }
     
     @Override

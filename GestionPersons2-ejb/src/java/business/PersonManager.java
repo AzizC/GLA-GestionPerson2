@@ -19,7 +19,7 @@ import persistence.Status;
 @Local
 public interface PersonManager {
     
-    public void register(Person p);
+    public void register(Person p, Status s, List<Address> addresses);
     public Person find(Long id);
     public Person update(Person p);
     public Person find(String firstname);

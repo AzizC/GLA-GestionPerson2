@@ -6,6 +6,7 @@
 package registration;
 
 import business.PersonManager;
+import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -71,11 +72,10 @@ public class RegistrationBean {
     }
     
     public String registerUser(){
-        person.setStatus(status);
-        person.addAddress(address1);
-        person.addAddress(address2);
-        
-        pm.register(person);
+        ArrayList<Address> ala = new ArrayList();
+        ala.add(address1);
+        ala.add(address2);
+        pm.register(person, status, ala);
         
         return "/search.xhtml";
     }

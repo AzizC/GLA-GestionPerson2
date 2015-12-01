@@ -30,6 +30,7 @@ package business;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -49,21 +50,12 @@ public class PersonManagerBean implements PersonManager {
     private EntityManager em;
 
     @Override
-    public void register(Person p) {
+    public void register(Person p, Status s, List<Address> addresses) {
         
-        Status status = p.getStatus();
         Query q = em.createNamedQuery("Status.findByTitle");
-        q.setParameter(1, status.getTitle());
+        q.setParameter(1, s.getTitle());
       
-        try{     
-            Status s = (Status) q.getSingleResult();
-            p.setStatus(s);  
-        } catch(NoResultException e) {
-            // if getSingleResult returns 0 result
-            em.persist(status);
-        }
-             
-        em.persist(p);
+        // TODO
     }
 
     @Override
