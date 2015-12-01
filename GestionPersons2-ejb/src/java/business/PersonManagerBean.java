@@ -35,6 +35,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import persistence.Address;
 import persistence.Person;
 import persistence.Status;
@@ -52,10 +53,33 @@ public class PersonManagerBean implements PersonManager {
     @Override
     public void register(Person p, Status s, List<Address> addresses) {
         
-        Query q = em.createNamedQuery("Status.findByTitle");
-        q.setParameter(1, s.getTitle());
-      
-        // TODO
+        TypedQuery<Status> query = em.createNamedQuery("Status.findByTitle", Status.class);
+        
+        try {
+            query.setParameter(1, s.getTitle());
+            Status sBDD = query.getSingleResult();
+            em.persist(p);
+            p.setStatus(sBDD);
+        } catch(NoResultException e){
+            em.persist(s);
+            em.persist(p);
+            p.setStatus(s);
+        }
+        
+        TypedQuery<Address> query2 = em.createNamedQuery("Address.findByCode", Address.class);
+        
+        for (Address a : addresses) {
+            try {
+                query2.setParameter(1, a.getCode());
+                Address aBDD = query2.getSingleResult();
+                em.persist(p);
+                p.addAddress(aBDD);
+            } catch(NoResultException e){
+                em.persist(a);
+                em.persist(p);
+                p.addAddress(a);
+            }
+        }
     }
 
     @Override
@@ -92,20 +116,23 @@ public class PersonManagerBean implements PersonManager {
     public void remove(Person pers) {
         
         Person managedPers = em.merge(pers);
-        Status statusPers = pers.getStatus();
-        Status managedStatus = em.merge(statusPers);
+        
+        Status status = managedPers.getStatus();
+        if(status.getPersons().size() == 1){
+            em.remove(status);   
+        } else {  
+            managedPers.removeStatus();
+        }
+        
+        for(Address a : managedPers.getAddresses()){
+            if(a.getPersons().size() == 1){
+               em.remove(a);
+            } else {
+               managedPers.removeAddress(a);
+            }
+        }
         
         em.remove(managedPers);
-        
-        if(statusPers.getPersons().size() == 1){
-            
-            em.remove(managedStatus);
-            
-        } else {
-            
-            statusPers.getPersons().remove(pers);
-            em.merge(statusPers);
-        }
     }
 
     @Override

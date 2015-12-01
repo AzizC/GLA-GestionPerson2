@@ -60,6 +60,10 @@ public class Status implements Serializable {
         this.persons.add(p);
     }
     
+    public void removePerson(Person p) {
+         this.persons.remove(p);
+    }
+    
     public Long getId() {
         return id;
     }
@@ -108,5 +112,5 @@ public class Status implements Serializable {
             return false;
         }
         return true;
-    }
+    } 
 }

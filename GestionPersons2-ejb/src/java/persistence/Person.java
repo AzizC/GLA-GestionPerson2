@@ -99,6 +99,10 @@ public class Person implements Serializable {
         this.status = status;
         this.status.addPerson(this);
     }
+    
+    public void removeStatus() {
+        this.status.removePerson(this);
+    }
 
     public List<Address> getAddresses() {
         return addresses;
